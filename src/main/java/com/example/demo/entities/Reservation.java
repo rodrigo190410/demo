@@ -23,11 +23,11 @@ public class Reservation {
     private Double hectares;
     private Double ratePerHectare;
     private Double totalAmount;
-    private String status;
+    private String status; // PENDING, ON GOING, CANCELLED
     //->review
     @JsonIgnore
-    @OneToMany(mappedBy = "reservation", fetch = FetchType.EAGER)
-    private List<Review> reviews;
+    @OneToOne(mappedBy = "reservation")
+    private Review review;
     //->payment
     @JsonIgnore
     @OneToMany(mappedBy = "reservation", fetch = FetchType.EAGER)
