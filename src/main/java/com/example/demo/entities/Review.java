@@ -25,7 +25,7 @@ public class Review {
     @JoinColumn(name = "customer_id")
     private Customer customer;
     //<-reservation
-    @ManyToOne
-    @JoinColumn(name = "reservation_id")
+    @OneToOne
+    @JoinColumn(name = "reservation_id", unique = true, nullable = false)
     private Reservation reservation;
 }
