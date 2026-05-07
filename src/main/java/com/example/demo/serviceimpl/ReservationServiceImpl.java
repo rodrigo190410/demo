@@ -1,8 +1,9 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.dto.ReservationByCustomerDTO;
+import com.example.demo.dto.ReservationByCustomerNameDTO;
 import com.example.demo.dto.ReservationRangeDateDTO;
 import com.example.demo.dto.ReservationRegisterDTO;
+import com.example.demo.entities.Customer;
 import com.example.demo.entities.Parcel;
 import com.example.demo.entities.Reservation;
 import com.example.demo.repositories.ReservationRepository;
@@ -57,12 +58,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationByCustomerDTO> listReservationByCustomerDTO(String name) {
+    public List<ReservationByCustomerNameDTO> listReservationByCustomerDTO(String name) {
         List<Reservation> reservationList = listByCustomerName(name);
-        List<ReservationByCustomerDTO> reservationDTOList = new ArrayList<>();
+        List<ReservationByCustomerNameDTO> reservationDTOList = new ArrayList<>();
 
         for (Reservation r: reservationList){
-            reservationDTOList.add(new ReservationByCustomerDTO(
+            reservationDTOList.add(new ReservationByCustomerNameDTO(
                     r.getId(), r.getScheduledStartDate(), r.getScheduledEndDate(),
                     r.getCustomer().getId(), r.getCustomer().getFirstName(),
                     r.getCustomer().getLastName()
@@ -76,14 +77,21 @@ public class ReservationServiceImpl implements ReservationService {
 
         Reservation newReservation = new Reservation();
 
+        newReservation.setId(reservationRegisterDTO.getId());
         newReservation.setScheduledStartDate(reservationRegisterDTO.getScheduledStartDate());
         newReservation.setScheduledEndDate(reservationRegisterDTO.getScheduledEndDate());
         newReservation.setHectares(reservationRegisterDTO.getHectares());
+        Customer customer = customerService.findById(reservationRegisterDTO.getCustomerId());
+        Parcel parcel = parcelService.findById(reservationRegisterDTO.getParcelId());
+
+        newReservation.setCustomer(customer);
+        newReservation.setParcel(parcel);
 
         newReservation.setStatus("PENDING");
         newReservation.setRatePerHectare(150.0);
         newReservation.setTotalAmount(reservationRegisterDTO.getHectares() * 150.0);
         newReservation.setPayments(new ArrayList<>());
+
 
         reservationRepository.save(newReservation);
 

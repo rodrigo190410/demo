@@ -1,13 +1,8 @@
 package com.example.demo;
 
-import com.example.demo.entities.Customer;
-import com.example.demo.entities.Parcel;
-import com.example.demo.entities.Reservation;
-import com.example.demo.entities.User;
-import com.example.demo.services.CustomerService;
-import com.example.demo.services.ParcelService;
-import com.example.demo.services.ReservationService;
-import com.example.demo.services.UserService;
+import com.example.demo.dto.UserDTO;
+import com.example.demo.entities.*;
+import com.example.demo.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -34,12 +29,21 @@ public class DemoApplication {
          @Autowired
          UserService userService,
          @Autowired
-         ParcelService parcelService
+         ParcelService parcelService,
+         @Autowired
+         AuthorityService authorityService
     ){
         return args -> {
-            userService.add(new User(null, "brunomanager", "pass", null, null));
-            userService.add(new User(null, "lucho", "pass", null, null));
-            userService.add(new User(null, "TricaArquiWeb", "pass", null, null));
+
+            Authority authority1 = authorityService.add(new Authority(null,"ROLE_ADMIN",null));
+            Authority authority2 = authorityService.add(new Authority(null,"ROLE_USER",null));
+            Authority authority3 = authorityService.add(new Authority(null,"ROLE_ASSIST",null));
+
+            //Data de prueba
+            userService.addDTO(new UserDTO(null, "brunouser", "pass", "ROLE_USER"));
+            userService.addDTO(new UserDTO(null, "luisuser", "pass", "ROLE_USER"));
+            userService.addDTO(new UserDTO(null, "adrianauser", "pass", "ROLE_USER;ROLE_ASSIST"));
+
 
             customerService.add(new Customer(
                     null, "Bruno", "Guerrero", 999666333, userService.findById(1L), null,

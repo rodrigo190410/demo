@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ReservationByCustomerDTO;
+import com.example.demo.dto.ReservationByCustomerNameDTO;
 import com.example.demo.dto.ReservationRangeDateDTO;
 import com.example.demo.dto.ReservationRegisterDTO;
 import com.example.demo.entities.Reservation;
@@ -35,7 +35,7 @@ public class ReservationController {
         return new ResponseEntity<>(reservationList, HttpStatus.OK);
     };
 
-    //Lista de reservas en rango de fechas
+    //Lista de reservas en rango de fechas -> para el admin
     @GetMapping("/reservations/{startFilter}/{endFilter}") // http://localhost:8080/seedair/reservations/{startFilter}/{endFilter}
     ResponseEntity<List<ReservationRangeDateDTO>> listByRangeDate(
             @PathVariable LocalDate startFilter,
@@ -45,10 +45,10 @@ public class ReservationController {
         return new ResponseEntity<>(newList, HttpStatus.OK);
     };
 
-    //Lista de reservas por primer nombre cliente
+    //Lista de reservas por primer nombre cliente -> para el admin
     @GetMapping("/reservations/{name}") // http://localhost:8080/seedair/reservations/{name}
-    ResponseEntity<List<ReservationByCustomerDTO>> listReservationsByCustomerName(@PathVariable String name){
-     List<ReservationByCustomerDTO> newList = reservationService.listReservationByCustomerDTO(name);
+    ResponseEntity<List<ReservationByCustomerNameDTO>> listReservationsByCustomerName(@PathVariable String name){
+     List<ReservationByCustomerNameDTO> newList = reservationService.listReservationByCustomerDTO(name);
      return new ResponseEntity<>(newList, HttpStatus.OK);
     }
 

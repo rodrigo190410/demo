@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class ReservationByCustomerDTO {
+public class ReservationByCustomerNameDTO {
     private Long id;
     private LocalDate scheduledStartDate;
     private LocalDate scheduledEndDate;
