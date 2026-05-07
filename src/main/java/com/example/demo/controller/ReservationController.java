@@ -8,6 +8,7 @@ import com.example.demo.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -50,6 +51,13 @@ public class ReservationController {
     ResponseEntity<List<ReservationByCustomerNameDTO>> listReservationsByCustomerName(@PathVariable String name){
      List<ReservationByCustomerNameDTO> newList = reservationService.listReservationByCustomerDTO(name);
      return new ResponseEntity<>(newList, HttpStatus.OK);
+    }
+
+    //Lista las reservas activas por un username -> para el cliente
+    @GetMapping("/reservations/active")// http://localhost:8080/seedair/reservations/active
+    public ResponseEntity<List<Reservation>> getActiveReservationsByUsername(Authentication authentication){
+        List<Reservation> actives = reservationService.getReservationsByUsername(authentication.getName());
+        return new ResponseEntity<>(actives, HttpStatus.OK);
     }
 
 }

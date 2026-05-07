@@ -3,6 +3,7 @@ package com.example.demo.repositories;
 import com.example.demo.entities.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,4 +15,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     //JPQL
     @Query(value = "SELECT r FROM Reservation r WHERE r.customer.firstName=?1", nativeQuery = false)
     List<Reservation> findByCustomerName(String name);
+
+    @Query("SELECT r FROM Reservation r WHERE r.customer.user.username =:username AND r.status NOT IN ('COMPLETED', 'CANCELLED')")
+    List<Reservation> findReservationByUsername(@Param("username") String username);
 }
