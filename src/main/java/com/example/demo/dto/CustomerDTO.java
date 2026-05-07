@@ -14,5 +14,5 @@ public class CustomerDTO {
 
     private String username;
     private String password;
-    private String authorities;
+    //private String authorities;
 }
