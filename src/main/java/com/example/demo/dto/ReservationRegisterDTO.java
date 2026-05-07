@@ -10,7 +10,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationRegisterDTO {
+    private Long id;
     private LocalDate scheduledStartDate;
     private LocalDate scheduledEndDate;
     private Double hectares;
+    private Long customerId;
+    private Long parcelId;
 }
