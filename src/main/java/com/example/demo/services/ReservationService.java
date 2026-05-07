@@ -17,6 +17,8 @@ public interface ReservationService {
     public ReservationRegisterDTO registerReservation(ReservationRegisterDTO reservationRegisterDTO);
     public Reservation findById(Long id);
 
+    List<Reservation> getReservationsByUsername(String username);
+
 
 
 }
