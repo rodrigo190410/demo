@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.dto.DroneDTO;
+import com.example.demo.dto.DroneModelDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.*;
 import com.example.demo.services.*;
@@ -31,7 +33,12 @@ public class DemoApplication {
          @Autowired
          ParcelService parcelService,
          @Autowired
-         AuthorityService authorityService
+         AuthorityService authorityService,
+         @Autowired
+         DroneModelService droneModelService,
+         @Autowired
+         DroneService droneService
+
     ){
         return args -> {
 
@@ -44,6 +51,20 @@ public class DemoApplication {
             userService.addDTO(new UserDTO(null, "luisuser", "pass", "ROLE_USER"));
             userService.addDTO(new UserDTO(null, "adrianauser", "pass", "ROLE_USER;ROLE_ASSIST"));
 
+            //Data de prueba de modelos de drones usando DTO
+            droneModelService.addDTO(new DroneModelDTO("DJI Agras T40", "DJI", 40.0, 20));
+            droneModelService.addDTO(new DroneModelDTO("DJI Agras T20P", "DJI", 20.0, 15));
+
+            //insertar drones fisico
+            droneService.addDTO(new DroneDTO("SN-001", 1L)); // Drone libre
+            Drone droneOcupado = droneService.addDTO(new DroneDTO("SN-002", 2L)); // Drone para Luis
+
+            // vincular el dron a la reserva (ID 2 de Luis Miguel)
+           /* Reservation luisReserva = reservationService.findById(2L);
+            if (luisReserva != null) {
+                luisReserva.setDrone(droneOcupado);
+                reservationService.add(luisReserva);
+            }*/
 
             customerService.add(new Customer(
                     null, "Bruno", "Guerrero", 999666333, userService.findById(1L), null,

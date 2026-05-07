@@ -103,4 +103,9 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.findById(id).get();
     }
 
+    @Override
+    public List<Reservation> getReservationsByUsername(String username) {
+        return reservationRepository.findReservationByUsername(username);
+    }
+
 }
