@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.CustomerQueryDTO;
 import com.example.demo.repositories.CustomerRepository;
+import com.example.demo.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,30 +13,31 @@ import java.util.List;
 @CrossOrigin("*")
 @RequestMapping("/seedair/customers/") // http://localhost:8080/seedair
 public class CustomerController {
+
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
-    // 1.GET: http://localhost:8080/customers/query1
-    @GetMapping("/query1")
+
+    @GetMapping("/query1")//http://localhost:8080/seedair/customers/query1
     public List<CustomerQueryDTO> getCustomersNoReservation() {
-        return customerRepository.findCustomersWithParcelButNoReservation();
+        return customerService.getCustomersNoReservation();
     }
 
-    // 2.GET: http://localhost:8080/customers/query2/0
-    @GetMapping("/query2/{cantidad}")
+
+    @GetMapping("/query2/{cantidad}")//http://localhost:8080/seedair/customers/query2/{cantidad}
     public List<CustomerQueryDTO> getCustomersMoreThanParcels(@PathVariable Integer cantidad) {
-        return customerRepository.findCustomersWithMoreThanXParcels(cantidad);
+        return customerService.getCustomersMoreThanParcels(cantidad);
     }
 
-    // 3.GET: http://localhost:8080/customers/query3/
-    @GetMapping("/query3")
-    public List<CustomerQueryDTO> getCustomersNoReviews() {
-        return customerRepository.findCustomersWithParcelAndNoReviews();
+
+    @GetMapping("/query3") //http://localhost:8080/seedair/customers/query3
+    public List<CustomerQueryDTO> getCustomersWithReservationNoReviews() {
+        return customerService.getCustomersWithReservationNoReviews();
     }
 
-    // 4.GET: http://localhost:8080/customers/query4/4.5
-    @GetMapping("/query4/{rating}")
+
+    @GetMapping("/query4/{rating}")//http://localhost:8080/seedair/customers/query4/{rating}
     public List<CustomerQueryDTO> getCustomersHighRating(@PathVariable Double rating) {
-        return customerRepository.findCustomersWithVisibleReviewAndRatingGreaterThan(rating);
+        return customerService.getCustomersHighRating(rating);
     }
 }

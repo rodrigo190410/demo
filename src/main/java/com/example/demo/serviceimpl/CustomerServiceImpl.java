@@ -1,6 +1,7 @@
 package com.example.demo.serviceimpl;
 
 import com.example.demo.dto.CustomerDTO;
+import com.example.demo.dto.CustomerQueryDTO;
 import com.example.demo.entities.Authority;
 import com.example.demo.entities.Customer;
 import com.example.demo.entities.User;
@@ -69,5 +70,23 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(newCustomer);
 
         return customerDTO;
+    }
+
+    @Override
+    public List<CustomerQueryDTO> getCustomersNoReservation() {
+        return customerRepository.findCustomersWithParcelButNoReservation();
+    }
+
+    @Override
+    public List<CustomerQueryDTO> getCustomersMoreThanParcels(Integer cantidad) {
+        return customerRepository.findCustomersWithMoreThanXParcels(cantidad);
+    }
+
+    public List<CustomerQueryDTO> getCustomersWithReservationNoReviews() {
+        return customerRepository.findCustomersWithReservationButNoReview();
+    }
+    @Override
+    public List<CustomerQueryDTO> getCustomersHighRating(Double rating) {
+        return customerRepository.findCustomersWithVisibleReviewAndRatingGreaterThan(rating);
     }
 }

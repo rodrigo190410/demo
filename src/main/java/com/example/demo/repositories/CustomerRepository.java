@@ -28,9 +28,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     @Query(value = "SELECT DISTINCT c.first_name as firstName, c.last_name as lastName, c.phone as phone " +
             "FROM customers c " +
-            "INNER JOIN parcels p ON c.id = p.customer_id " +
+            "INNER JOIN reservations r ON c.id = r.customer_id " +
             "WHERE c.id NOT IN (SELECT customer_id FROM reviews)", nativeQuery = true)
-    List<CustomerQueryDTO> findCustomersWithParcelAndNoReviews();
+    List<CustomerQueryDTO> findCustomersWithReservationButNoReview();
 
 
     @Query(value = "SELECT DISTINCT c.first_name as firstName, c.last_name as lastName, c.phone as phone " +
