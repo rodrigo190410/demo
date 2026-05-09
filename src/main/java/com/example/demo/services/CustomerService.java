@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.CustomerDTO;
+import com.example.demo.dto.CustomerSummaryDTO;
 import com.example.demo.entities.Customer;
 
 import java.util.List;
@@ -10,4 +11,9 @@ public interface CustomerService {
     public List<Customer> listAll();
     public Customer findById(Long id);
     public CustomerDTO addDTO(CustomerDTO customerDTO);
+
+    List<CustomerSummaryDTO> getCustomersNoReservation();
+    List<CustomerSummaryDTO> getCustomersMoreThanParcels(Integer cantidad);
+    List<CustomerSummaryDTO> getCustomersWithReservationNoReviews();
+    List<CustomerSummaryDTO> getCustomersHighRating(Double rating);
 }
