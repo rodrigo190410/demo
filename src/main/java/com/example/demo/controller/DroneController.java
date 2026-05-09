@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.DroneAvailableDTO;
+import com.example.demo.dto.DroneDTO;
 import com.example.demo.entities.Drone;
 import com.example.demo.services.DroneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin("*")
@@ -28,6 +30,21 @@ public class DroneController {
     public ResponseEntity<List<Drone>> getDroneByStatus(@PathVariable String status) {
         List<Drone> drones = droneService.getDronesByStatus(status);
         return new ResponseEntity<>(drones, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")// http://localhost:8080/seedair/drones/add
+    public ResponseEntity<Drone> addDrone(@RequestBody Drone drone) {
+        return new ResponseEntity<>(droneService.addDrone(drone), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/delete/{id}") //http://localhost:8080/seedair/drones/delete/6
+    public ResponseEntity<Drone> deleteDrone(@PathVariable Long id) {
+        try{
+            droneService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }
