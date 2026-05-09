@@ -18,6 +18,9 @@ public interface ReservationService {
     public Reservation findById(Long id);
 
     List<Reservation> getReservationsByUsername(String username);
+    //funcionalidad para eliminar una reserva, como admin
+    void delete(Long id);
+
 
 
 
