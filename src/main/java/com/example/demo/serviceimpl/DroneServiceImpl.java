@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class DroneServiceImpl implements DroneService {
@@ -52,6 +53,14 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public List<Drone> getDronesByStatus(String status) {
         return droneRepository.findByCurrentStatus(status);
+    }
+
+    @Override
+    public void delete(Long id) {
+        if (!droneRepository.existsById(id)) {
+            throw new NoSuchElementException("No se encontro el drone con ese id:" + id);
+        }
+        droneRepository.deleteById(id);
     }
 
 
