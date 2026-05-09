@@ -4,6 +4,7 @@ import com.example.demo.dto.DroneDTO;
 import com.example.demo.dto.DroneModelDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.*;
+import com.example.demo.repositories.DroneRepository;
 import com.example.demo.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -37,7 +38,9 @@ public class DemoApplication {
          @Autowired
          DroneModelService droneModelService,
          @Autowired
-         DroneService droneService
+         DroneService droneService,
+         @Autowired
+         DroneRepository droneRepository
 
     ){
         return args -> {
@@ -65,6 +68,21 @@ public class DemoApplication {
                 luisReserva.setDrone(droneOcupado);
                 reservationService.add(luisReserva);
             }*/
+
+            // Drone en mantenimiento (Vínculado al T40 - ID 1)
+            Drone droneManto = droneService.addDTO(new DroneDTO("SN-MANTO-01", 1L));
+            droneManto.setCurrentStatus("MAINTENANCE");
+            droneRepository.save(droneManto);
+
+            // Drone inactivo/fuera de servicio (Vínculado al T20P - ID 2)
+            Drone droneInactivo = droneService.addDTO(new DroneDTO("SN-OFF-99", 2L));
+            droneInactivo.setCurrentStatus("INACTIVE");
+            droneRepository.save(droneInactivo);
+
+            // Drone nuevo en revisión técnica (Vínculado al T40 - ID 1)
+            Drone droneRevision = droneService.addDTO(new DroneDTO("SN-CHECK-05", 1L));
+            droneRevision.setCurrentStatus("MAINTENANCE");
+            droneRepository.save(droneRevision);
 
             customerService.add(new Customer(
                     null, "Bruno", "Guerrero", 999666333, userService.findById(1L), null,

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin("*")
@@ -58,6 +59,18 @@ public class ReservationController {
     public ResponseEntity<List<Reservation>> getActiveReservationsByUsername(Authentication authentication){
         List<Reservation> actives = reservationService.getReservationsByUsername(authentication.getName());
         return new ResponseEntity<>(actives, HttpStatus.OK);
+    }
+
+
+    //eliminar una reserva mediante id
+    @DeleteMapping("/delete/{id}") // http://localhost:8080/seedair/delete/1
+    public ResponseEntity<Reservation> deleteReservation(@PathVariable Long id){
+        try{
+            reservationService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

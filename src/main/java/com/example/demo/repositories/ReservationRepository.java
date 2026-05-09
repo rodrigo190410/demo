@@ -16,6 +16,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = "SELECT r FROM Reservation r WHERE r.customer.firstName=?1", nativeQuery = false)
     List<Reservation> findByCustomerName(String name);
 
+    //JPQL CHEKEAR
     @Query("SELECT r FROM Reservation r WHERE r.customer.user.username =:username AND r.status NOT IN ('COMPLETED', 'CANCELLED')")
     List<Reservation> findReservationByUsername(@Param("username") String username);
 }

@@ -79,7 +79,7 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(
 
                 (auth) -> auth
-    //                    .anyRequest().permitAll()
+                        //.anyRequest().permitAll()
 
                         .requestMatchers(AUTH_WHITELIST).permitAll()
 
