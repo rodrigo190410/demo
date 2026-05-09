@@ -13,5 +13,6 @@ public interface DroneService {
     public List<DroneAvailableDTO> getAvailableDrones();
     public Drone addDTO(DroneDTO dto);
     public Drone findById(Long id);
+    public List<Drone> getDronesByStatus(String status);
 
 }

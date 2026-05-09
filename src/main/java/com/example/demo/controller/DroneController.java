@@ -6,10 +6,7 @@ import com.example.demo.services.DroneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +21,12 @@ public class DroneController {
     @GetMapping("/available") // http://localhost:8080/seedair/drones/available
     public ResponseEntity<List<DroneAvailableDTO>> getAvailableDrones() {
         List<DroneAvailableDTO> drones = droneService.getAvailableDrones();
+        return new ResponseEntity<>(drones, HttpStatus.OK);
+    }
+
+    @GetMapping("/status/{status}") // http://localhost:8080/seedair/drones/status/MAINTENANCE o INACTIVE
+    public ResponseEntity<List<Drone>> getDroneByStatus(@PathVariable String status) {
+        List<Drone> drones = droneService.getDronesByStatus(status);
         return new ResponseEntity<>(drones, HttpStatus.OK);
     }
 
