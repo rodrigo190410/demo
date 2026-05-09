@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -106,6 +107,15 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Reservation> getReservationsByUsername(String username) {
         return reservationRepository.findReservationByUsername(username);
+    }
+
+    @Override
+    public void delete(Long id) {
+        //verificar si existe
+        if (!reservationRepository.existsById(id)) {
+            throw new NoSuchElementException("No se encontro la reserva con ese id:" + id);
+        }
+        reservationRepository.deleteById(id);
     }
 
 }
