@@ -1,8 +1,6 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.dto.ReservationByCustomerNameDTO;
-import com.example.demo.dto.ReservationRangeDateDTO;
-import com.example.demo.dto.ReservationRegisterDTO;
+import com.example.demo.dto.*;
 import com.example.demo.entities.Customer;
 import com.example.demo.entities.Parcel;
 import com.example.demo.entities.Reservation;
@@ -102,6 +100,38 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation findById(Long id) {
         return reservationRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Reservation> listByStatus(String status) {
+        return reservationRepository.findByStatus(status);
+    }
+
+    @Override
+    public List<ReservationByStatusDTO> listByStatusDTO(String status) {
+        List<Reservation> reservationList = listByStatus(status);
+        List<ReservationByStatusDTO> listDto = new ArrayList<>();
+        for (Reservation r:reservationList){
+            listDto.add(new ReservationByStatusDTO(
+                    r.getScheduledStartDate(), r.getScheduledEndDate(),
+                    r.getCustomer().getFirstName(), r.getStatus()
+            ));
+        }
+        return listDto;
+    }
+
+    @Override
+    public SetReservationStatusDTO updateStatus(SetReservationStatusDTO updatedStatus) {
+        Reservation foundReservation = findById(updatedStatus.getId());
+        foundReservation.setStatus(updatedStatus.getStatus());
+        Reservation savedReservation = reservationRepository.save(foundReservation);
+        SetReservationStatusDTO newDTO = new SetReservationStatusDTO();
+        newDTO.setId(savedReservation.getId());
+        newDTO.setStatus(savedReservation.getStatus());
+        newDTO.setCustomerName(savedReservation.getCustomer().getFirstName());
+        newDTO.setScheduledStartDate(savedReservation.getScheduledStartDate());
+
+        return newDTO;
     }
 
     @Override

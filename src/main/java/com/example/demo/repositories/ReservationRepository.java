@@ -11,10 +11,11 @@ import java.util.List;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     //QUERY METHOD
     List<Reservation> findByScheduledStartDateBetween(LocalDate startFilter, LocalDate endFilter);
-
+    List<Reservation> findByStatus(String status);
     //JPQL
     @Query(value = "SELECT r FROM Reservation r WHERE r.customer.firstName=?1", nativeQuery = false)
     List<Reservation> findByCustomerName(String name);
+
 
     //JPQL CHEKEAR
     @Query("SELECT r FROM Reservation r WHERE r.customer.user.username =:username AND r.status NOT IN ('COMPLETED', 'CANCELLED')")
