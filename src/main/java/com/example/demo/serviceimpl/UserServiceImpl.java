@@ -36,11 +36,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username);
     }
 
-    @Override
-    public User findByPassword(String password) {
-        return userRepository.findByPassword(password);
-    }
-
 
     private List<Authority> authoritiesFromString(String authorities) {
 

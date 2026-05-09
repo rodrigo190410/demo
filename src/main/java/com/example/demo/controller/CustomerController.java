@@ -17,7 +17,8 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-    @PostMapping("users/register/customer") // http://localhost:8080/seedair/customers/register
+    @PostMapping("users/register/customer") // http://localhost:8080/seedair/users/register/customer
+
     public ResponseEntity<CustomerDTO> register(@RequestBody CustomerDTO customer){
       CustomerDTO cust = customerService.addDTO(customer);
       return new ResponseEntity<>(cust, HttpStatus.CREATED);
