@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ReservationByCustomerNameDTO;
-import com.example.demo.dto.ReservationRangeDateDTO;
-import com.example.demo.dto.ReservationRegisterDTO;
+import com.example.demo.dto.*;
 import com.example.demo.entities.Reservation;
 import com.example.demo.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,7 @@ public class ReservationController {
 
     //El customer registra una reserva
     @PostMapping("/reservations/register") // http://localhost:8080/seedair/reservations/register
-    ResponseEntity<ReservationRegisterDTO> registerReservation(
+    public ResponseEntity<ReservationRegisterDTO> registerReservation(
             @RequestBody ReservationRegisterDTO reservationRegisterDTO
     ){
         ReservationRegisterDTO newRegister = reservationService.registerReservation(reservationRegisterDTO);
@@ -32,14 +30,14 @@ public class ReservationController {
     }
     //Lista general de reservas -> temp
     @GetMapping("/reservations") // http://localhost:8080/seedair/reservations
-    ResponseEntity<List<Reservation>> listAll(){
+    public ResponseEntity<List<Reservation>> listAll(){
       List<Reservation> reservationList = reservationService.listAll();
         return new ResponseEntity<>(reservationList, HttpStatus.OK);
     };
 
     //Lista de reservas en rango de fechas -> para el admin
     @GetMapping("/reservations/{startFilter}/{endFilter}") // http://localhost:8080/seedair/reservations/{startFilter}/{endFilter}
-    ResponseEntity<List<ReservationRangeDateDTO>> listByRangeDate(
+    public ResponseEntity<List<ReservationRangeDateDTO>> listByRangeDate(
             @PathVariable LocalDate startFilter,
             @PathVariable LocalDate endFilter
             ){
@@ -49,10 +47,25 @@ public class ReservationController {
 
     //Lista de reservas por primer nombre cliente -> para el admin
     @GetMapping("/reservations/{name}") // http://localhost:8080/seedair/reservations/{name}
-    ResponseEntity<List<ReservationByCustomerNameDTO>> listReservationsByCustomerName(@PathVariable String name){
+    public ResponseEntity<List<ReservationByCustomerNameDTO>> listReservationsByCustomerName(@PathVariable String name){
      List<ReservationByCustomerNameDTO> newList = reservationService.listReservationByCustomerDTO(name);
      return new ResponseEntity<>(newList, HttpStatus.OK);
     }
+
+    //Lista de reservas por estado -> para el admin
+    @GetMapping("/reservations/status/{status}") //http://localhost:8080/seedair/reservations/status/PENDING
+    public ResponseEntity<List<ReservationByStatusDTO>> listReservationByStatus(@PathVariable String status){
+        List<ReservationByStatusDTO> reservationByStatusList = reservationService.listByStatusDTO(status);
+        return new ResponseEntity<>(reservationByStatusList, HttpStatus.OK);
+    }
+
+    //Actualizar estado de una reserva -> para el asistente
+    @PutMapping("/reservations/updated_status") // http://localhost:8080/seedair/reservations/updated_status
+    public ResponseEntity<SetReservationStatusDTO> updateStatus (@RequestBody SetReservationStatusDTO updatedStatus){
+        SetReservationStatusDTO newStatus = reservationService.updateStatus(updatedStatus);
+        return new ResponseEntity<>(newStatus, HttpStatus.OK);
+    }
+
 
     //Lista las reservas activas por un username -> para el cliente
     @GetMapping("/reservations/active")// http://localhost:8080/seedair/reservations/active

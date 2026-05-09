@@ -23,7 +23,7 @@ public class Reservation {
     private Double hectares;
     private Double ratePerHectare;
     private Double totalAmount;
-    private String status; // PENDING, ON GOING, CANCELLED
+    private String status; // PENDING, ON GOING, CANCELLED, COMPLETED
     //->review
     @JsonIgnore
     @OneToOne(mappedBy = "reservation")
