@@ -49,5 +49,10 @@ public class DroneServiceImpl implements DroneService {
         return droneRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public List<Drone> getDronesByStatus(String status) {
+        return droneRepository.findByCurrentStatus(status);
+    }
+
 
 }
