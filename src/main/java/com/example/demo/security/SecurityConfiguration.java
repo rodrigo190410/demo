@@ -79,17 +79,17 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(
 
                 (auth) -> auth
-                        .anyRequest().permitAll()
+    //                    .anyRequest().permitAll()
 
-//                        .requestMatchers(AUTH_WHITELIST).permitAll()
-//
-//                        .requestMatchers(HttpMethod.GET,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
-//                        .requestMatchers(HttpMethod.PUT,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN","ROLE_ASSIST")
-//                        .requestMatchers(HttpMethod.POST,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
-//                        .requestMatchers(HttpMethod.DELETE,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN")
-//                        agregando una nueva ruta para que cuando se descomente esto funcione la peticion de drones libres
-//                        .requestMatchers("/seedair/drones/available").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-//                        .anyRequest().authenticated()
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
+
+                        .requestMatchers(HttpMethod.GET,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                        .requestMatchers(HttpMethod.PUT,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN","ROLE_ASSIST")
+                        .requestMatchers(HttpMethod.POST,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                        .requestMatchers(HttpMethod.DELETE,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN")
+                        //agregando una nueva ruta para que cuando se descomente esto funcione la peticion de drones libres
+                        .requestMatchers("/seedair/drones/available").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .anyRequest().authenticated()
 
         );
 
