@@ -51,7 +51,7 @@ public class DemoApplication {
 
             //Data de prueba
             userService.addDTO(new UserDTO(null, "brunouser", "pass", "ROLE_USER"));
-            userService.addDTO(new UserDTO(null, "luisuser", "pass", "ROLE_USER"));
+            userService.addDTO(new UserDTO(null, "luisuser", "pass", "ROLE_ADMIN"));
             userService.addDTO(new UserDTO(null, "adrianauser", "pass", "ROLE_USER;ROLE_ASSIST"));
 
             //Data de prueba de modelos de drones usando DTO
