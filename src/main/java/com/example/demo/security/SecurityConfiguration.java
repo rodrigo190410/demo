@@ -83,10 +83,13 @@ public class SecurityConfiguration {
 
                         .requestMatchers(AUTH_WHITELIST).permitAll()
 
+                        //permisos reservations
                         .requestMatchers(HttpMethod.GET,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                         .requestMatchers(HttpMethod.PUT,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN","ROLE_ASSIST")
                         .requestMatchers(HttpMethod.POST,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                         .requestMatchers(HttpMethod.DELETE,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN")
+                        //permisos parcelas
+                        .requestMatchers(HttpMethod.POST,"/seedair/parcels/register/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                         //agregando una nueva ruta para que cuando se descomente esto funcione la peticion de drones libres
                         .requestMatchers("/seedair/drones/available").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .anyRequest().authenticated()

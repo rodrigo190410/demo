@@ -10,7 +10,10 @@ import java.util.List;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
+    //QUERY METHOD
+    public Customer findByUser_username(String username);
 
+    //SQL NATIVE
     @Query(value = "SELECT DISTINCT c.first_name as firstName, c.last_name as lastName, c.phone as phone " +
             "FROM customers c " +
             "INNER JOIN parcels p ON c.id = p.customer_id " +

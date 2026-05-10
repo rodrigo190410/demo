@@ -20,7 +20,7 @@ public class ReservationController {
     @Autowired
     ReservationService reservationService;
 
-    //El customer registra una reserva
+    //registrar una reserva -> para el cliente
     @PostMapping("/reservations/register") // http://localhost:8080/seedair/reservations/register
     public ResponseEntity<ReservationRegisterDTO> registerReservation(
             @RequestBody ReservationRegisterDTO reservationRegisterDTO
