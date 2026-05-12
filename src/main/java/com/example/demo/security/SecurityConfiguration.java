@@ -90,6 +90,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE,"/seedair/reservations/**").hasAnyAuthority("ROLE_ADMIN")
                         //permisos parcelas
                         .requestMatchers(HttpMethod.POST,"/seedair/parcels/register/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                        //permisos reviews
+                        .requestMatchers(HttpMethod.POST, "/seedair/reviews/register/**").hasAnyAuthority("ROLE_ADMIN, ROLE_USER")
                         //agregando una nueva ruta para que cuando se descomente esto funcione la peticion de drones libres
                         .requestMatchers("/seedair/drones/available").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .anyRequest().authenticated()
