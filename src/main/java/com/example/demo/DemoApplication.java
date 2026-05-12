@@ -40,8 +40,11 @@ public class DemoApplication {
          @Autowired
          DroneService droneService,
          @Autowired
-         DroneRepository droneRepository
-
+         DroneRepository droneRepository,
+         @Autowired
+         ReviewService reviewService,
+         @Autowired
+         OperatorService operatorService
     ){
         return args -> {
 
@@ -50,9 +53,9 @@ public class DemoApplication {
             Authority authority3 = authorityService.add(new Authority(null,"ROLE_ASSIST",null));
 
             //Data de prueba
-            userService.addDTO(new UserDTO(null, "brunouser", "pass", "ROLE_USER"));
-            userService.addDTO(new UserDTO(null, "luisuser", "pass", "ROLE_ADMIN"));
-            userService.addDTO(new UserDTO(null, "adrianauser", "pass", "ROLE_USER;ROLE_ASSIST"));
+            userService.addDTO(new UserDTO(null, "brunomanager", "pass", "ROLE_ADMIN"));
+            userService.addDTO(new UserDTO(null, "luismanager", "pass", "ROLE_ADMIN"));
+            userService.addDTO(new UserDTO(null, "adrianamanager", "pass", "ROLE_ADMIN"));
 
             //Data de prueba de modelos de drones usando DTO
             droneModelService.addDTO(new DroneModelDTO("DJI Agras T40", "DJI", 40.0, 20));
@@ -96,8 +99,6 @@ public class DemoApplication {
                     null, "Adriana", "Tapia", 987654321, userService.findById(3L), null,
                     null, null
             ));
-
-
             parcelService.add(new Parcel(null, "Cajarmaca - Sector Condorillo Alto", 2.5, -13.4589,
                     -76.1325,LocalDate.of(2026,04,30),
                     null, customerService.findById(1L)
@@ -116,22 +117,56 @@ public class DemoApplication {
             reservationService.add(new Reservation(
                     null, LocalDate.of(2026, 05,16),
                     LocalDate.of(2026, 05,18),
-                    1.5, 333.33, 500.0, "ON GOING",null, new ArrayList<>(), customerService.findById(1L),
-                    null, null, null
+                    1.5, 333.33, 500.0, "ON GOING",null, null, customerService.findById(1L),
+                    parcelService.findById(1L), operatorService.findById(1L), null
             ));
 
             reservationService.add(new Reservation(
                     null, LocalDate.of(2026, 05,22),
                     LocalDate.of(2026, 05,24),
-                    3.5, 100.0, 350.0, "PENDING",null, new ArrayList<>(), customerService.findById(2L),
-                    null, null, null
+                    3.5, 100.0, 350.0, "PENDING",null, null, customerService.findById(2L),
+                    parcelService.findById(2L), operatorService.findById(2L), null
             ));
 
             reservationService.add(new Reservation(
                     null, LocalDate.of(2026, 05,26),
                     LocalDate.of(2026, 05,28),
-                    6.0, 83.33, 500.0, "CANCELLED",null, new ArrayList<>(), customerService.findById(3L),
-                    null, null, null
+                    6.0, 83.33, 500.0, "CANCELLED",null, null, customerService.findById(3L),
+                    parcelService.findById(3L), operatorService.findById(3L), null
+            ));
+
+            reviewService.add(new Review(
+                    null, 5.0, "Excelente servicio y atención",
+                    true, LocalDate.of(2026,05,19),
+                    customerService.findById(1L), reservationService.findById(1L)
+            ));
+            reviewService.add(new Review(
+                    null, 4.5, "La experiencia fue buena, aunque hubo demora",
+                    true, LocalDate.of(2026,05,25),
+                    customerService.findById(2L), reservationService.findById(2L)
+            ));
+            reviewService.add(new Review(
+                    null, 1.0, "Muy mala experiencia",
+                    false, LocalDate.of(2026,05,29),
+                    customerService.findById(3L), reservationService.findById(3L)
+            ));
+            operatorService.add(new Operator(
+                    null, "DRN-AGRO-1024",
+                    "Manejo de drones de siembra avanzada",
+                    5, true,
+                    null
+            ));
+            operatorService.add(new Operator(
+                    null, "DRN-AGRO-2055",
+                    "Manejo de drones de siembra intermedia",
+                    3, false,
+                    null
+            ));
+            operatorService.add(new Operator(
+                    null, "DRN-AGRO-4012",
+                    "Manejo de drones de siembra avanzada",
+                    6, true,
+                    null
             ));
         };
     }
