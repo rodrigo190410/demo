@@ -44,7 +44,9 @@ public class DemoApplication {
          @Autowired
          ReviewService reviewService,
          @Autowired
-         OperatorService operatorService
+         OperatorService operatorService,
+         @Autowired
+         MaintenanceService maintenanceService
     ){
         return args -> {
 
@@ -167,6 +169,18 @@ public class DemoApplication {
                     "Manejo de drones de siembra avanzada",
                     6, true,
                     null
+            ));
+            maintenanceService.add(new Maintenance(
+                    null, LocalDate.of(2026,05,15), null,
+                    "IN_PROGRESS", "Sustitución de batería defectuosa", 150.50, droneService.findById(1L)
+            ));
+            maintenanceService.add(new Maintenance(
+                    null, LocalDate.of(2026,05,19), null,
+                    "SCHEDULED", "Cambio de hélices principales y limpieza", 200.50, droneService.findById(2L)
+            ));
+            maintenanceService.add(new Maintenance(
+                    null, LocalDate.of(2026,03,21), LocalDate.of(2026,03,23),
+                    "COMPLETED", "Revisión trimestral preventiva de motores", 125.00, droneService.findById(3L)
             ));
         };
     }
