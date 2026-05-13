@@ -14,8 +14,6 @@ public class DroneModelServiceImpl implements DroneModelService {
     @Autowired
     private DroneModelRepository droneModelRepository;
 
-
-
     @Override
     public DroneModel addDroneModel(DroneModel droneModel) {
         return droneModelRepository.save(droneModel);
