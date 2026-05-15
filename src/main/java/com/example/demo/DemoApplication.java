@@ -46,7 +46,9 @@ public class DemoApplication {
          @Autowired
          OperatorService operatorService,
          @Autowired
-         MaintenanceService maintenanceService
+         MaintenanceService maintenanceService,
+         @Autowired
+         PaymentService paymentService
     ){
         return args -> {
 
@@ -116,6 +118,24 @@ public class DemoApplication {
             ));
 
 
+            operatorService.add(new Operator(
+                    null, "DRN-AGRO-1024",
+                    "Manejo de drones de siembra avanzada",
+                    5, true,
+                    null
+            ));
+            operatorService.add(new Operator(
+                    null, "DRN-AGRO-2055",
+                    "Manejo de drones de siembra intermedia",
+                    3, false,
+                    null
+            ));
+            operatorService.add(new Operator(
+                    null, "DRN-AGRO-4012",
+                    "Manejo de drones de siembra avanzada",
+                    6, true,
+                    null));
+
             reservationService.add(new Reservation(
                     null, LocalDate.of(2026, 05,16),
                     LocalDate.of(2026, 05,18),
@@ -152,24 +172,7 @@ public class DemoApplication {
                     false, LocalDate.of(2026,05,29),
                     customerService.findById(3L), reservationService.findById(3L)
             ));
-            operatorService.add(new Operator(
-                    null, "DRN-AGRO-1024",
-                    "Manejo de drones de siembra avanzada",
-                    5, true,
-                    null
-            ));
-            operatorService.add(new Operator(
-                    null, "DRN-AGRO-2055",
-                    "Manejo de drones de siembra intermedia",
-                    3, false,
-                    null
-            ));
-            operatorService.add(new Operator(
-                    null, "DRN-AGRO-4012",
-                    "Manejo de drones de siembra avanzada",
-                    6, true,
-                    null
-            ));
+
             maintenanceService.add(new Maintenance(
                     null, LocalDate.of(2026,05,15), null,
                     "IN_PROGRESS", "Sustitución de batería defectuosa", 150.50, droneService.findById(1L)
@@ -181,6 +184,19 @@ public class DemoApplication {
             maintenanceService.add(new Maintenance(
                     null, LocalDate.of(2026,03,21), LocalDate.of(2026,03,23),
                     "COMPLETED", "Revisión trimestral preventiva de motores", 125.00, droneService.findById(3L)
+            ));
+
+            paymentService.add(new Payment(
+                    null, LocalDate.of(2026,05,13) , 250.0, "CRÉDITO",
+                    "PENDIENTE", "0001", reservationService.findById(1L)
+            ));
+            paymentService.add(new Payment(
+                    null, LocalDate.of(2026,05,19) , 250.0, "CRÉDITO",
+                    "COMPLETO", "0002", reservationService.findById(1L)
+            ));
+            paymentService.add(new Payment(
+                    null, LocalDate.of(2026,05,21) , 100.0, "CONTADO",
+                    "COMPLETO", "0003", reservationService.findById(2L)
             ));
         };
     }

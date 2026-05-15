@@ -3,12 +3,16 @@ package com.example.demo.serviceimpl;
 import com.example.demo.dto.*;
 import com.example.demo.entities.Customer;
 import com.example.demo.entities.Parcel;
+import com.example.demo.entities.Payment;
 import com.example.demo.entities.Reservation;
+import com.example.demo.repositories.CustomerRepository;
+import com.example.demo.repositories.PaymentRepository;
 import com.example.demo.repositories.ReservationRepository;
 import com.example.demo.services.CustomerService;
 import com.example.demo.services.ParcelService;
 import com.example.demo.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,9 +25,12 @@ public class ReservationServiceImpl implements ReservationService {
     @Autowired
     ReservationRepository reservationRepository;
     @Autowired
-    CustomerService customerService;
+    PaymentRepository paymentRepository;
     @Autowired
     ParcelService parcelService;
+    @Autowired
+    CustomerRepository customerRepository;
+
 
     @Override
     public Reservation add(Reservation reservation) {
@@ -74,25 +81,39 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationRegisterDTO registerReservation(ReservationRegisterDTO reservationRegisterDTO) {
 
-        Reservation newReservation = new Reservation();
-
-        newReservation.setId(reservationRegisterDTO.getId());
-        newReservation.setScheduledStartDate(reservationRegisterDTO.getScheduledStartDate());
-        newReservation.setScheduledEndDate(reservationRegisterDTO.getScheduledEndDate());
-        newReservation.setHectares(reservationRegisterDTO.getHectares());
-        Customer customer = customerService.findById(reservationRegisterDTO.getCustomerId());
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Customer customer = customerRepository.findByUser_username(username);
         Parcel parcel = parcelService.findById(reservationRegisterDTO.getParcelId());
+        Double hectares= parcel.getTotalHectares();
+        Double ratePerHectare = 0.0;
+        if (hectares <= 6) {
+            ratePerHectare = 75.0;
+        } else {
+            ratePerHectare = 50.0;
+        }
 
-        newReservation.setCustomer(customer);
-        newReservation.setParcel(parcel);
+        //Añadir validacion si hay operador disponible
+        //Añadir validacion si hay dron disponible
 
-        newReservation.setStatus("PENDING");
-        newReservation.setRatePerHectare(150.0);
-        newReservation.setTotalAmount(reservationRegisterDTO.getHectares() * 150.0);
-        newReservation.setPayments(new ArrayList<>());
+        Double totalAmount= hectares*ratePerHectare;
 
+        Reservation newReservation = new Reservation(
+                null, reservationRegisterDTO.getScheduledStartDate(), reservationRegisterDTO.getScheduledEndDate(),
+                hectares, ratePerHectare,totalAmount, "PENDIENTE", null,
+                new ArrayList<>(), customer, parcel, null, null
+        );
 
         reservationRepository.save(newReservation);
+
+        LocalDate paymentDate = newReservation.getScheduledEndDate().plusDays(1);
+
+        Payment initialPayment = new Payment(
+                null, paymentDate, totalAmount, "AL CONTADO", "PENDIENTE",
+                null, newReservation
+        );
+        Payment savedPayment = paymentRepository.save(initialPayment);
+        savedPayment.setOperationCode("OP-" + savedPayment.getId());
+        paymentRepository.save(savedPayment);
 
         return reservationRegisterDTO;
     }
